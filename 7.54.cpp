@@ -3,6 +3,14 @@
 #include <stdlib.h>
 using namespace std;
 
+/*
+Question from the book:
+7.54 Repeat Exercise 7.53 for four numbers. Try to design an O(N2 log N) algorithm.
+(Hint: Compute all possible sums of two elements. Sort these possible sums. Then
+proceed as in Exercise 7.53.)
+*/
+
+//Finds the sums of every number plus every other number
 vector<int> every_double_sum(vector<int>& v) {
 	vector<int> sums;
 	for (int i = 0; i < v.size(); i++) {
@@ -13,6 +21,7 @@ vector<int> every_double_sum(vector<int>& v) {
 	return sums;
 }
 
+//Adapted from the quicksort in the book: https://users.cs.fiu.edu/~weiss/dsaa_c++4/code/
 void quicksort(vector<int>& v) {
 	if (v.size() > 1) {
 		vector<int> smaller;
@@ -36,6 +45,7 @@ void quicksort(vector<int>& v) {
 	}
 }
 
+//standard binarySearch algorithm
 bool binarySearch(vector<int>& v, int n) {
 	int l = 0;
 	int h = v.size() - 1;
@@ -47,8 +57,10 @@ bool binarySearch(vector<int>& v, int n) {
 		else if (v[m] < n) l = m + 1;
 		else h = m - 1;
 	}
+	return false;
 }
 
+//Adapted from 7.53
 void nlogn(vector<int>& v, int k) {
 	vector<int> sums = every_double_sum(v);
 	quicksort(sums);
