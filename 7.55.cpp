@@ -4,9 +4,12 @@
 #include <stdlib.h>
 using namespace std;
 
+/*
+Question from book:
+7.55 Repeat Exercise 7.53 for three numbers. Try to design an O(N2 ) algorithm
+*/
 
-
-
+//Same from 7.54
 vector<int> every_double_sum(vector<int>& v) {
 	vector<int> sums;
 	for (int i = 0; i < v.size(); i++) {
@@ -17,6 +20,7 @@ vector<int> every_double_sum(vector<int>& v) {
 	return sums;
 }
 
+//Same from 7.54
 void quicksort(vector<int>& v) {
 	if (v.size() > 1) {
 		vector<int> smaller;
@@ -40,6 +44,7 @@ void quicksort(vector<int>& v) {
 	}
 }
 
+//Same from 7.54
 bool binarySearch(vector<int>& v, int n) {
 	int l = 0;
 	int h = v.size() - 1;
@@ -54,13 +59,14 @@ bool binarySearch(vector<int>& v, int n) {
 	return false;
 }
 
-void nlogn(vector<int>& v, int k) {
+//Adapted from 7.54
+void nlogn(vector<int>& v, int k) { //k is sum we're finding
 	vector<int> sums = every_double_sum(v);
 	quicksort(sums);
 	int counter = 0;
 	for (int i = 0; i < v.size(); i++) { //compare every single number with every double sum = triple sum
-		int key = k - v[i];
-		if (key < 0) continue;
+		int key = k - v[i]; //key is the number that would be needed to be found to make this work
+		if (key < 0) continue; //no negaitves in the set
 		if (binarySearch(sums, key)) {
 			cout << "double sum " << key << " and " << v[i] << " equals " << k << endl;
 			counter++;
