@@ -6,6 +6,16 @@
 using namespace std;
 #define p 3 //the pivot where we do insertion sort
 
+/*
+Question from book:
+Continuing from Exercise 7.25, after part (a),
+a. Perform a test so that the smaller subarray is processed by the first recursive call,
+while the larger subarray is processed by the second recursive call.
+b. Remove the tail recursion by writing a while loop and altering left or right, as
+necessary
+*/
+
+//See 7.16 for documentation on insertionSort
 void insertionSort(vector<int>& v, int left, int right) {
     int lowestIndex = 0;
 
@@ -17,6 +27,8 @@ void insertionSort(vector<int>& v, int left, int right) {
         swap(v[i], v[lowestIndex]);
     }
 }
+
+//This code was directly copied from the book: https://users.cs.fiu.edu/~weiss/dsaa_c++4/code/
 /**
  * Return median of left, center, and right.
  * Order these and hide the pivot.
@@ -38,6 +50,7 @@ const Comparable& median3(vector<Comparable>& a, int left, int right)
     return a[right - 1];
 }
 
+//This code was copied from the book, then modified: https://users.cs.fiu.edu/~weiss/dsaa_c++4/code/
 /**
  * Internal quicksort method that makes recursive calls.
  * Uses median-of-three partitioning and a cutoff of 10.
@@ -52,25 +65,24 @@ void quicksort(vector<Comparable>& a, int left, int right) {
         return;
     }
     else {
-        int ogleft = -1;
-        int ogright = -1;
+        int ogleft = -1; //original left
+        int ogright = -1; //original right
         while (true) {
-            
             int i, j;
             Comparable pivot;
 
-            if (ogleft != -1) {
+            if (ogleft != -1) { //not first loop, left was sorted, sort right
                 right = left - 2;
                 left = ogleft;
                 ogleft = -1;
-                if (right - left > 1)goto sort;
+                if (right - left > 1)goto sort; //don't sort right twice
                 else break;
             }
-            if (ogright != -1) {
+            if (ogright != -1) { //not first loop, right was sorted, sort left
                 left = right + 2;
                 right = ogright;
                 ogright = -1;
-                if (right - left > 1)goto sort;
+                if (right - left > 1)goto sort; //dont sort left twice
                 else break;
             }
 
@@ -86,20 +98,21 @@ void quicksort(vector<Comparable>& a, int left, int right) {
             }
             std::swap(a[i], a[right - 1]);  // Restore pivot
 
-            if (right - i > i - left) {
+            if (right - i > i - left) { //if right side smaller, adjust left and right so it's sorted first
                 ogright = right;
                 right = i - 1;
             }
-            else {
+            else { //else, do the same for left instead
                 ogleft = left;
                 left = i + 1;
             }
             sort:
-                quicksort(a, left, right);
+                quicksort(a, left, right); //Read the comment on compiler optimization in 7.25
         }
     }
 }
 
+//This code was copied from the book: https://users.cs.fiu.edu/~weiss/dsaa_c++4/code/
 /**
  * Quicksort algorithm (driver).
  */
