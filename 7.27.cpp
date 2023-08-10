@@ -4,8 +4,23 @@
 #include <time.h>
 using namespace std;
 
-int hsCounter = 0;
+/*
+Question from the book:
+7.27 Suppose the recursive quicksort receives an int parameter, depth, from the driver
+that is initially approximately 2 log N.
+a. Modify the recursive quicksort to call heapsort on its current subarray if the level
+of recursion has reached depth. (Hint: Decrement depth as you make recursive
+calls; when it is 0, switch to heapsort.)
+b. Prove that the worst-case running time of this algorithm is O(N log N).
+c. Conduct experiments to determine how often heapsort gets called.
+d. Implement this technique in conjunction with tail-recursion removal in
+Exercise 7.25.
+e. Explain why the technique in Exercise 7.26 would no longer be needed.
+*/
 
+int hsCounter = 0; //Part C
+
+//See 7.14 for documentation on PercolateDown
 template <typename T>
 void PercolateDown(vector<T>& v, int low, int high, int n) {
 	int af = low - 1; //AdjustmentFactor
@@ -30,6 +45,7 @@ void PercolateDown(vector<T>& v, int low, int high, int n) {
 	}
 }
 
+//See 7.14 for documentation on heapsort()
 template <typename T>
 void heapsort(vector<T>& arr, int low, int high) {
 	hsCounter++;
@@ -44,6 +60,7 @@ void heapsort(vector<T>& arr, int low, int high) {
 	}
 }
 
+//Code copied from book: https://users.cs.fiu.edu/~weiss/dsaa_c++4/code/
 /**
  * Return median of left, center, and right.
  * Order these and hide the pivot.
@@ -65,6 +82,7 @@ const Comparable& median3(vector<Comparable>& a, int left, int right)
 	return a[right - 1];
 }
 
+//Code copied from book and then modified. https://users.cs.fiu.edu/~weiss/dsaa_c++4/code/
 /**
  * Internal quicksort method that makes recursive calls.
  * Uses median-of-three partitioning and a cutoff of 10.
@@ -98,6 +116,7 @@ void quicksort(vector<Comparable>& a, int left, int right, const int depth) {
 	}
 }
 
+//Copied from book: https://users.cs.fiu.edu/~weiss/dsaa_c++4/code/
 /**
  * Quicksort algorithm (driver).
  */
