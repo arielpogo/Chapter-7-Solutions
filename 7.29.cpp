@@ -4,6 +4,12 @@
 #include <time.h>
 using namespace std;
 
+/*
+Question from book, with my comments in [brackets]
+7.29 Write a program to implement the selection algorithm [mentioned in the book, section 7.7.6].
+*/
+
+//See 7.16 for documentation on insertionSort
 void insertionSort(vector<int>& v, int left, int right) {
 	int lowestIndex = 0;
 
@@ -16,6 +22,7 @@ void insertionSort(vector<int>& v, int left, int right) {
 	}
 }
 
+//Copied from the book: https://users.cs.fiu.edu/~weiss/dsaa_c++4/code/
 /**
  * Return median of left, center, and right.
  * Order these and hide the pivot.
@@ -37,6 +44,7 @@ const Comparable& median3(vector<Comparable>& a, int left, int right)
 	return a[right - 1];
 }
 
+//Quicksort copied from the book then modified into quickselect: https://users.cs.fiu.edu/~weiss/dsaa_c++4/code/
 /**
  * Internal quicksort method that makes recursive calls.
  * Uses median-of-three partitioning and a cutoff of 10.
@@ -48,7 +56,7 @@ template <typename Comparable>
 Comparable quickselect(vector<Comparable>& a, int left, int right, int k) {
 	if (left + 10 <= right) {
 		insertionSort(a, left, right);
-		return a[k-1];
+		return a[k-1]; //return the kth value
 	}
 	else {
 		const Comparable& pivot = median3(a, left, right);
@@ -63,11 +71,13 @@ Comparable quickselect(vector<Comparable>& a, int left, int right, int k) {
 		}
 		std::swap(a[i], a[right - 1]);  // Restore pivot
 
-		if(k <= i) quickselect(a, left, i-1,k);
-		else if(k > i + 1) quickselect(a, i+1, right, k);
+		//this is the change from quicksort
+		if(k <= i) quickselect(a, left, i-1,k); //quickselect (aka quicksort) the left array, if the kth value in the left array
+		else if(k > i + 1) quickselect(a, i+1, right, k); //quickselect the right array, if the kth value is in the right array
 	}
 }
 
+//Copied from the book: https://users.cs.fiu.edu/~weiss/dsaa_c++4/code/
 /**
  * Quicksort algorithm (driver).
  */
