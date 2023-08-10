@@ -6,7 +6,19 @@
 #include <chrono>
 using namespace std;
 
-void insertionSort(vector<int>& v, int increment) {
+/*
+Question from book, with my comments in [brackets]:
+7.48 Write an efficient version of Shellsort and compare performance when the following
+increment sequences are used:
+a. Shell’s original sequence
+b. Hibbard’s increments
+c. Knuth’s increments [LaTeX formula]
+d. Gonnet’s increments [LaTeX formula]
+e. Sedgewick’s increments
+*/
+
+//see 7.16 for documentation on insertionSort
+void insertionSort(vector<int>& v, int increment) { //increment parameter makes this shell sort
 	int lowestIndex = 0;
 
 	for (int i = 0; i < v.size(); i+=increment) {
