@@ -5,6 +5,18 @@
 #include <chrono>
 using namespace std;
 
+/*
+Question from the book:
+7.53 We are given an array that contains N numbers. We want to determine if there are
+two numbers whose sum equals a given number K. For instance, if the input is 8,
+4, 1, 6, and K is 10, then the answer is yes (4 and 6). A number may be used twice.
+Do the following:
+a. Give an O(N2 ) algorithm to solve this problem.
+b. Give an O(N log N) algorithm to solve this problem. (Hint: Sort the items first.
+After that is done, you can solve the problem in linear time.)
+c. Code both solutions and compare the running times of your algorithms.
+*/
+
 void nsquared(vector<int>& v, int k) { //n^2 algorithim: take each number (n), compare to every other number (n). If their sum == k, success. (n*n = n^2)
 	int combos = 0;
 	for (int i = 0; i < v.size(); i++) {
@@ -19,6 +31,7 @@ void nsquared(vector<int>& v, int k) { //n^2 algorithim: take each number (n), c
 	cout << "RESULTS: " << combos << endl;
 }
 
+//Adapted from the quicksort in the book: https://users.cs.fiu.edu/~weiss/dsaa_c++4/code/
 void quicksort(vector<int>& v) {
 	if (v.size() > 1) {
 		vector<int> smaller;
@@ -42,6 +55,8 @@ void quicksort(vector<int>& v) {
 	}
 }
 
+//Standard binarySearch algorithm, given v is sorted and n is the number being searched
+//Returns if found
 bool binarySearch(vector<int>& v, int n) {
 	int l = 0;
 	int h = v.size();
@@ -58,6 +73,7 @@ bool binarySearch(vector<int>& v, int n) {
 			m = ((h - l) / 2) + l;
 		}
 	}
+	return false;
 }
 
 void nlogn(vector<int>& v, int k) {//nlogn algorithim: take each number (n), figure out k-num, find if that number is in the vector using binary search (log n) = nlogn
