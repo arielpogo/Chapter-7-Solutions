@@ -4,25 +4,32 @@
 #include <time.h>
 using namespace std;
 
-template <typename T>
-void PercolateDown(vector<T>& v, int low, int high, int n) {
-	int af = low - 1; //AdjustmentFactor
+/*
+Question wording from the book, my comments are in [brackets]:
+7.14 Rewrite heapsort [provided in the text] so that it sorts only items that are in the range low to high, which
+are passed as additional parameters
+*/
 
-	while ((n-af) * 2 + af <= high) {
-		if ((n - af) * 2 + 1 + af <= high) {
-			if (v[(n - af) * 2 + 1 + af] > v[(n - af) * 2 + af] && v[n] < v[(n - af) * 2 + 1 + af]) {
-				swap(v[n], v[(n - af) * 2 + 1 + af]);
-				n = (n - af) * 2 + 1 + af;
+//!!!!NOTE: See 7.56 for a more optimized version of PercolateDown
+template <typename T>
+void PercolateDown(vector<T>& v, int low, int high, int n) { //builds a max heap
+	int af = low - 1; //AdjustmentFactor, since binary heaps start at index 0 we compensate so the equations for children/parents still work
+
+	while ((n-af) * 2 + af <= high) { //while(children)
+		if ((n - af) * 2 + 1 + af <= high) { //if right child
+			if (v[(n - af) * 2 + 1 + af] > v[(n - af) * 2 + af] && v[n] < v[(n - af) * 2 + 1 + af]) { //if right child greater than left && greater than parent
+				swap(v[n], v[(n - af) * 2 + 1 + af]); //swap
+				n = (n - af) * 2 + 1 + af; //set index to right child (thus percolating down)
 			}
-			else if (v[n] < v[(n - af) * 2 + af]) {
-				swap(v[n], v[(n - af) * 2 + af]);
-				n = (n - af) * 2 + af;
+			else if (v[n] < v[(n - af) * 2 + af]) { //otherwise if left if greater than parent (no need to check right child if it DNE)
+				swap(v[n], v[(n - af) * 2 + af]); //swap
+				n = (n - af) * 2 + af; //set index to left child (thus percolating down)
 			}
 			else break;
 		}
-		else if (v[n] < v[(n - af) * 2 + af]) {
-			swap(v[n], v[(n - af) * 2 + af]);
-			n = (n - af)* 2 + af;
+		else if (v[n] < v[(n - af) * 2 + af]) { //otherwise if left if greater than parent (no need to check right child if it DNE)
+			swap(v[n], v[(n - af) * 2 + af]); //swap
+			n = (n - af)* 2 + af; //set index to left child (thus percolating down)
 		}
 		else break;
 	}
@@ -30,18 +37,15 @@ void PercolateDown(vector<T>& v, int low, int high, int n) {
 
 template <typename T>
 void heapsort(vector<T>& arr, int low, int high) {
-	//BinaryHeap<T> heap(arr, low, high);
-
+	//we percolate down every value in the tree to build a heap, however we skip the bottom most row because it can't percolate down anywhere, thus i=(high-low)/2
 	for (int i = (high - low) / 2 + low; i >= low; i--) {
 		PercolateDown(arr, low, high, i);
 	}
 
 	for (int i = high; i > low; i--) {
-		swap(arr[low], arr[i]);
-		PercolateDown(arr, low, i-1, low); //we essentially make the heap smaller and smaller, percolating the top value down
+		swap(arr[low], arr[i]); //place the highest value at the end
+		PercolateDown(arr, low, i-1, low); //we essentially made the heap smaller now, and we percolate the top (low) value down
 	}
-
-	//for (int i = low; i < high; i++) arr[i] = heap.deleteMin();
 }
 
 int main(void) {
