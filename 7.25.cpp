@@ -6,6 +6,17 @@
 using namespace std;
 #define p 3 //the pivot where we do insertion sort
 
+/*
+Question from the book:
+7.25 The quicksort in the text uses two recursive calls. Remove one of the calls as
+follows:
+a. Rewrite the code so that the second recursive call is unconditionally the last
+line in quicksort. Do this by reversing the if/else and returning after the call to
+insertionSort.
+b. Remove the tail recursion by writing a while loop and altering left.
+*/
+
+//See 7.16 for documentation on insertionSort
 void insertionSort(vector<int>& v, int left, int right) {
 	int lowestIndex = 0;
 
@@ -17,6 +28,8 @@ void insertionSort(vector<int>& v, int left, int right) {
 		swap(v[i], v[lowestIndex]);
 	}
 }
+
+//This code was directly copied from the book: https://users.cs.fiu.edu/~weiss/dsaa_c++4/code/
 /**
  * Return median of left, center, and right.
  * Order these and hide the pivot.
@@ -38,6 +51,8 @@ const Comparable& median3(vector<Comparable>& a, int left, int right)
     return a[right - 1];
 }
 
+
+//This code was directly copied from the book, and then edited: https://users.cs.fiu.edu/~weiss/dsaa_c++4/code/
 /**
  * Internal quicksort method that makes recursive calls.
  * Uses median-of-three partitioning and a cutoff of 10.
@@ -52,7 +67,7 @@ void quicksort(vector<Comparable>& a, int left, int right) {
         return;
     }
     else{
-        while (left < right) {
+        while (left < right) { //while loop for part b
             const Comparable& pivot = median3(a, left, right);
 
             // Begin partitioning
@@ -65,12 +80,15 @@ void quicksort(vector<Comparable>& a, int left, int right) {
             }
             std::swap(a[i], a[right - 1]);  // Restore pivot
 
-            quicksort(a, left, i);
-            left = i + 1;
+            quicksort(a, left, i); //second quicksort removed, part a
+            left = i + 1; //altering left, part b
+		//This is done because of a compiler optimization with recursive functions where the recursive call is the last line of the function
+		//This optimization reduces the chance, or completely removes the chance of a stack overflow from too many layers of recursion
         }
-	}
+    }
 }
 
+//This was copied directly from the book: https://users.cs.fiu.edu/~weiss/dsaa_c++4/code/
 /**
  * Quicksort algorithm (driver).
  */
