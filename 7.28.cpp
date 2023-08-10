@@ -19,7 +19,7 @@ EQUAL SMALL UNKNOWN LARGE EQUAL
            i       j
 */
 
-//See 7.14 for documentation on insertionSort()
+//See 7.16 for documentation on insertionSort()
 void insertionSort(vector<int>& v) {
 	int lowestIndex = 0;
 
