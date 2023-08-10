@@ -5,6 +5,16 @@
 #include <chrono>
 using namespace std;
 
+/*
+Question from the book: 
+Implement an optimized version of quicksort and experiment with combinations
+of the following:
+a. pivot: first element, middle element, random element, median of three, median
+of five
+b. cutoff values from 0 to 20
+*/
+
+//see 7.16 for documentation on insertionSort
 void insertionSort(vector<int>& v, int left, int right) {
 	int lowestIndex = 0;
 
@@ -17,6 +27,7 @@ void insertionSort(vector<int>& v, int left, int right) {
 	}
 }
 
+//see 7.14 for documentation on PercolateDown
 template <typename T>
 void PercolateDown(vector<T>& v, int low, int high, int n) {
 	int af = low - 1; //AdjustmentFactor
@@ -41,6 +52,7 @@ void PercolateDown(vector<T>& v, int low, int high, int n) {
 	}
 }
 
+//see 7.14 for documentation on heapsort()
 template <typename T>
 void heapsort(vector<T>& arr, int low, int high) {
 	for (int i = (high - low) / 2 + low; i >= low; i--) {
@@ -53,6 +65,7 @@ void heapsort(vector<T>& arr, int low, int high) {
 	}
 }
 
+//Copied from the book: https://users.cs.fiu.edu/~weiss/dsaa_c++4/code/
 /**
  * Return median of left, center, and right.
  * Order these and hide the pivot.
@@ -74,6 +87,8 @@ const Comparable& median3(vector<Comparable>& a, int left, int right)
 	return a[right - 1];
 }
 
+//Approximates the median of an array based on first, last, 1st quartile, median, and 3rd quartile, returning the median of the five
+//Also hides the pivot
 template <typename Comparable>
 const Comparable& median5(vector<Comparable>& a, int left, int right)
 {
@@ -81,6 +96,7 @@ const Comparable& median5(vector<Comparable>& a, int left, int right)
 
 	int b[5] = { left, size / 5 + left, left + size / 2,(3 * size) / 4 + left, right }; //first, second, third (median median), fourth, fifth medians where 1st & 5th are 1st and last
 
+	//Order them
 	for (int i = 0; i < 5; i++) {
 		for (int j = i+1; j < 5; j++) {
 			if (a[b[i]] > a[b[j]]) swap(a[b[i]], a[b[j]]); //every combination (0,1), (0,2), (0,3), (0,4), (0,5), (1,2) etc.
@@ -88,7 +104,7 @@ const Comparable& median5(vector<Comparable>& a, int left, int right)
 	}
 
 	// Place pivot at position right - 1
-	std::swap(a[left+size/2], a[right - 1]);
+	std::swap(a[left+size/2], a[right - 1]); //Median of the five
 	return a[right - 1];
 }
 
@@ -110,8 +126,7 @@ const Comparable& random(vector<Comparable>& a, int left, int right)
 	return a[rand() % (right-left) + left];
 }
 
-
-
+//Copied then modified from the book: https://users.cs.fiu.edu/~weiss/dsaa_c++4/code/
 /**
  * Internal quicksort method that makes recursive calls.
  * Uses median-of-three partitioning and a cutoff of 10.
@@ -120,7 +135,7 @@ const Comparable& random(vector<Comparable>& a, int left, int right)
  * right is the right-most index of the subarray.
  */
 template <typename Comparable>
-void quicksort(vector<Comparable>& a, int left, int right, int cutoff, const Comparable&(*pivotfn)(vector<Comparable>&, int, int)) {
+void quicksort(vector<Comparable>& a, int left, int right, int cutoff, const Comparable&(*pivotfn)(vector<Comparable>&, int, int)) { //parameter to provide function pointer for finding pivot
 	if (left + cutoff > right) {
 		heapsort(a, left, right); //after pivot is smaller than a certain size
 		return;
